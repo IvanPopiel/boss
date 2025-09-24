@@ -9,6 +9,7 @@ import {
   InsertarAsignaciones,
   Editarusuarios,
   EliminarPermisos,
+  EliminarUsuarios,
 } from "../index";
 
 export const useUsuariosStore = create((set, get) => ({
@@ -103,6 +104,11 @@ export const useUsuariosStore = create((set, get) => ({
       tipouser: p.tipouser,
       tipodoc: p.tipodoc,
     });
+
+    if (!dataUserNew) {
+      console.error("❌ No se pudo insertar el usuario en la tabla usuarios");
+      return null; // cortamos acá si falló
+    }
     await InsertarAsignaciones({
       id_empresa: p.id_empresa,
       id_usuario: dataUserNew.id,
@@ -121,4 +127,23 @@ export const useUsuariosStore = create((set, get) => ({
     await supabase.auth.signOut();
     return data.user;
   },
+  eliminarUsuario: async (p) => {
+  try {
+    // 1. Eliminar sus permisos
+    await EliminarPermisos({ id_usuario: p.id });
+
+    // 2. Eliminar al usuario de la tabla usuarios
+    // (asumo que ya tenés una función EliminarUsuarios en tu index.js)
+    await EliminarUsuarios({ id: p.id });
+
+    // 3. Refrescar la lista de usuarios
+    const { mostrarUsuariosTodos } = get();
+    // ojo: asegurate de pasar el id_empresa correcto
+    if (p.id_empresa) {
+      await mostrarUsuariosTodos({ id_empresa: p.id_empresa });
+    }
+  } catch (error) {
+    console.error("❌ Error eliminando usuario:", error);
+  }
+},
 }));

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {
   ContentAccionesTabla,
   useCategoriasStore,
+  useUsuariosStore,
   Paginacion,
 } from "../../../index";
 import Swal from "sweetalert2";
@@ -27,7 +28,7 @@ export function TablaPersonal({
   const [datas, setData] = useState(data);
   const [columnFilters, setColumnFilters] = useState([]);
 
-  const { eliminarCategoria } = useCategoriasStore();
+  const { eliminarUsuario } = useUsuariosStore();
   function eliminar(p) {
     Swal.fire({
       title: "¿Estás seguro(a)?",
@@ -40,7 +41,7 @@ export function TablaPersonal({
     }).then(async (result) => {
       if (result.isConfirmed) {
         console.log(p);
-        await eliminarCategoria({ id: p });
+        await eliminarUsuario({ id: p });
       }
     });
   }
