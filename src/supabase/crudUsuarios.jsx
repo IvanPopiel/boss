@@ -114,7 +114,7 @@ export async function EliminarUsuarios(p) {
   try {
     const { error } = await supabase
       .from("usuarios")
-      .delete()
+      .update({ estado: "inactivo" })
       .eq("id", p.id); // 👈 asegurate que tu PK sea "id"
 
     if (error) {
