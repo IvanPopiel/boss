@@ -1,31 +1,34 @@
 import styled from "styled-components";
-export function CardDatosEmpresa({ titulo, valor,img }) {
+
+export function CardDatosEmpresa({ titulo, valor, img, descripcion, isQR, link }) {
   return (
     <Container>
-      <div class="card">
-        <div class="pricing-block-content">
-          <p class="pricing-plan">{titulo}</p>
-          <div
-            class="price-value"
-            data-currency="$ USD"
-            data-currency-simple="USD"
-          >
-            <p class="price-number">{valor}</p>
-            {
-              img&&  <img src={img}/>
-            }
-          
-           
+      <div className="card">
+        <div className="pricing-block-content">
+          <p className="pricing-plan">{titulo}</p>
+          <div className="price-value">
+            {valor && <p className="price-number">{valor}</p>}
+            {img && (
+              isQR ? (
+                <a href={link} target="_blank" rel="noopener noreferrer">
+                  <img src={img} alt={titulo} className="img-qr" />
+                </a>
+              ) : (
+                <img src={img} alt={titulo} />
+              )
+            )}
           </div>
+          {descripcion && <p className="descripcion">{descripcion}</p>}
         </div>
       </div>
     </Container>
   );
 }
+
 const Container = styled.div`
-z-index:1;
+  z-index: 1;
   .card {
-    width: 190px;
+    width: 220px;
     background: #fffefe;
     padding: 1rem;
     border-radius: 1rem;
@@ -33,54 +36,50 @@ z-index:1;
     box-shadow: 0.4rem 0.4rem #05060f;
     overflow: hidden;
     color: black;
+    text-align: center;
   }
-&:hover{
-  .card{
-   
-  }
-}
-  /*Card content*/
+
   .pricing-block-content {
     display: flex;
     height: 100%;
     flex-direction: column;
     gap: 0.5rem;
+    align-items: center;
   }
 
   .pricing-plan {
     color: #05060f;
     font-size: 1.3rem;
-    line-height: 1.25;
     font-weight: 700;
   }
 
   .price-value {
     display: flex;
-    color: #05060f;
-    font-size: 1.8rem;
-    line-height: 1.25;
-    font-weight: 700;
-    justify-content:center;
-    img{
-      width:50px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    img {
+      width: 50px; /* default */
+    }
+
+    .img-qr {
+      width: 160px;   /* más grande */
+      height: 160px;
+      border-radius: 8px;
+      border: 1px solid #05060f;
+      transition: transform 0.3s ease;
+    }
+
+    .img-qr:hover {
+      transform: scale(1.1); /* efecto zoom */
     }
   }
 
-  .pricing-note {
-    opacity: 0.8;
-  }
-
-  /*Checklist*/
-  .check-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  .descripcion {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #333;
     margin-top: 0.5rem;
-  }
-
-  .check-list-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
   }
 `;
