@@ -23,7 +23,7 @@ function InventarioEntradaSalida() {
     useProductosStore();
   const { dataempresa } = useEmpresaStore();
   const { data, isLoading, error } = useQuery({
-    queryKey: ["reporte Inventario entrada salida", { _id_empresa: dataempresa?.id,_id_producto:productoItemSelect?.id }],
+    queryKey: ["reporte inventario entrada salida", { _id_empresa: dataempresa?.id,_id_producto:productoItemSelect?.id }],
     queryFn: () => reportInventarioEntradaSalida({ _id_empresa: dataempresa?.id,_id_producto:productoItemSelect.id }),
     enabled: !!dataempresa,
   });

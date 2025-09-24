@@ -15,7 +15,7 @@ import {
   StockActualPorProducto,
   StockBajoMinimo,
   InventarioEntradaSalida,
-  StockInventarioValorado,
+  StockInventariooValorado,
 } from "../index";
 
 import StockActualTodos from "../components/organismos/report/StockActualTodos";
@@ -103,7 +103,7 @@ export function MyRoutes() {
         }
       />
       <Route
-        path="/Inventario"
+        path="/inventario"
         element={
           <ProtectedRoute accessBy="authenticated">
             <Layout>
@@ -129,12 +129,12 @@ export function MyRoutes() {
         />
         <Route path="stock-bajo-minimo" element={<StockBajoMinimo />} />
         <Route
-          path="Inventario-entradas-salidas"
+          path="inventario-entradas-salidas"
           element={<InventarioEntradaSalida />}
         />
         <Route
           path="inventario-valorado"
-          element={<StockInventarioValorado />}
+          element={<StockInventariooValorado />}
         />
       </Route>
     </Routes>

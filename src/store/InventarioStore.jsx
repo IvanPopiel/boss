@@ -5,8 +5,8 @@ export const useInventarioStore = create((set, get) => ({
   setBuscador: (p) => {
     set({ buscador: p });
   },
-  dataInventario: [],
-  InventarioItemSelect: [],
+  datainventario: [],
+  inventarioItemSelect: [],
   parametros: {},
 
   insertarInventario: async (p) => {
@@ -18,12 +18,12 @@ export const useInventarioStore = create((set, get) => ({
   mostrarInventario: async (p) => {
     const response = await MostrarInventario(p);
     set({ parametros: p });
-    set({ dataInventario: response });
+    set({ datainventario: response });
     return response;
   },
   buscarInventario: async (p) => {
     const response = await BuscarInventario(p);
-    set({ dataInventario: response });
+    set({ datainventario: response });
     return response;
   },
 }));

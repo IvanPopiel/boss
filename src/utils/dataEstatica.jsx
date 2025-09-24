@@ -34,7 +34,7 @@ export const LinksArray = [
   {
     label: "Inventario",
     icon: <v.iconocategorias />,
-    to: "/Inventario",
+    to: "/inventario",
   },
   {
     label: "Reportes",

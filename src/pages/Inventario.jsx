@@ -38,15 +38,15 @@ export function Inventario() {
     enabled: dataempresa.id != null,
   });
 
-  //mostrar Inventario
+  //mostrar inventario
   const { data: datainventario } = useQuery({
-    queryKey: ["mostrar Inventario", dataempresa.id],
+    queryKey: ["mostrar inventario", dataempresa.id],
     queryFn: () => mostrarInventario({ id_empresa: dataempresa.id }),
     enabled: dataempresa.id != null,
   });
-  //buscador Inventario
+  //buscador inventario
   const { data: buscarinventario } = useQuery({
-    queryKey: ["buscar Inventario", buscadorinventario],
+    queryKey: ["buscar inventario", buscadorinventario],
     queryFn: () =>
       buscarInventario({ buscador: buscadorinventario, id_empresa: dataempresa.id }),
     enabled: dataempresa.id != null,

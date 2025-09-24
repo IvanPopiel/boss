@@ -87,7 +87,7 @@ export async function ReportStockBajoMinimo(p) {
   return data;
 }
 export async function ReportInventarioEntradaSalida(p) {
-  const { data, error } = await supabase.rpc("mostrarInventarioempresa",p)
+  const { data, error } = await supabase.rpc("mostrarinventarioempresa",p)
   if (error) {
     return;
   }

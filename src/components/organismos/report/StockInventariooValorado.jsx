@@ -11,12 +11,12 @@ import {
 import { useEmpresaStore, useProductosStore } from "../../../index";
 import { useQuery } from "@tanstack/react-query";
 
-function StockInventarioValorado() {
-  const { reportInventarioValorado } = useProductosStore();
+function StockInventariooValorado() {
+  const { reportInventariooValorado } = useProductosStore();
   const { dataempresa } = useEmpresaStore();
   const { data, isLoading, error } = useQuery({
     queryKey: ["reporte stock valorado", { _id_empresa: dataempresa?.id }],
-    queryFn: () => reportInventarioValorado({ _id_empresa: dataempresa?.id }),
+    queryFn: () => reportInventariooValorado({ _id_empresa: dataempresa?.id }),
     enabled: !!dataempresa,
   });
   if (isLoading) {
@@ -96,7 +96,7 @@ function StockInventarioValorado() {
                     marginBottom: 10,
                   }}
                 >
-                  Inventario valorado
+                  Inventarioo valorado
                 </Text>
                 <Text
                   style={{
@@ -137,4 +137,4 @@ const Container = styled.div`
     height: 100%;
   }
 `;
-export default StockInventarioValorado;
+export default StockInventariooValorado;

@@ -52,7 +52,7 @@ export { default as InventarioEntradaSalida } from './components/organismos/repo
 export { default as StockActualPorProducto } from './components/organismos/report/StockActualPorProducto';
 export { default as StockActualTodos } from './components/organismos/report/StockActualTodos';
 export { default as StockBajoMinimo } from './components/organismos/report/StockBajoMinimo';
-export { default as StockInventarioValorado } from './components/organismos/report/StockInventarioValorado';
+export { default as StockInventariooValorado } from './components/organismos/report/StockInventariooValorado';
 export * from './components/organismos/sidebar/Sidebar';
 export * from './components/organismos/sidebar/SidebarCard';
 export * from './components/organismos/tablas/AccionesTabla';

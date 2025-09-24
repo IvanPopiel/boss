@@ -16,7 +16,7 @@ export function Tabs() {
     setactiveTab(index);
   };
   const { idusuario } = useUsuariosStore();
-  const {dataInventario} = useInventarioStore()
+  const {datainventario} = useInventarioStore()
   const { año, mes, tipo, tituloBtnDesMovimientos } = useOperaciones();
   const { dataRptMovimientosAñoMes, rptMovimientosAñoMes } =
     useMovimientosStore();
@@ -105,7 +105,7 @@ export function Tabs() {
       </ul>
 
       <div className="tab-content">
-        {activeTab === 0 && <TablaInventario data={dataInventario}/>}
+        {activeTab === 0 && <TablaInventario data={datainventario}/>}
         {activeTab === 1 && <>area 2</>}
         {activeTab === 2 && <>area 3</>}
       </div>

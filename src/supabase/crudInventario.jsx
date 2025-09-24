@@ -1,7 +1,7 @@
 import { supabase } from "../index";
 import Swal from "sweetalert2";
 export async function InsertarInventario(p) {
-  const { error } = await supabase.from("Inventario").insert(p);
+  const { error } = await supabase.from("inventario").insert(p);
   if (error) {
     Swal.fire({
       icon: "error",
@@ -14,7 +14,7 @@ export async function InsertarInventario(p) {
 
 export async function MostrarInventario(p) {
   const { data } = await supabase
-    .rpc("mostrarInventarioempresa", {
+    .rpc("mostrarinventarioempresa", {
       _id_empresa: p.id_empresa,
     })
     .order("id", { ascending: false });
@@ -22,7 +22,7 @@ export async function MostrarInventario(p) {
 }
 export async function BuscarInventario(p) {
   const { data } = await supabase
-    .rpc("buscarInventarioempresa", {
+    .rpc("buscarinventarioempresa", {
       _id_empresa: p.id_empresa,
       buscador: p.buscador,
     })
