@@ -3,7 +3,7 @@ import fondocuadros from "../../assets/fondocuadros.svg";
 import { Btnsave } from "../moleculas/Btnsave";
 import { Device } from "../../styles/breakpoints";
 import { BsFire } from "react-icons/bs";
-import logo from "../../assets/inventarioslogo.png";
+import logo from "../../assets/icono.png";
 import { useEmpresaStore } from "../../store/EmpresaStore";
 import { v } from "../../styles/variables";
 import { ShapeSBig, ShapeSmall } from "../atomos/Shapes";
