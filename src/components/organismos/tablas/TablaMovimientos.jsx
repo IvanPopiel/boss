@@ -25,7 +25,7 @@ export function TablaMovimientos({
   const { eliminarMovimiento } = useMovimientosStore();
   function eliminar(p) {
     Swal.fire({
-      title: "¿Estás seguro(a)(e)?",
+      title: "¿Estás seguro(a)?",
       text: "Una vez eliminado, ¡no podrá recuperar este registro!",
       icon: "warning",
       showCancelButton: true,

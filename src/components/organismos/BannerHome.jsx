@@ -24,9 +24,14 @@ export function BannerHome() {
 
 <ContentSocial>
   <CardDatosEmpresa
-    titulo="Visión"
+    titulo="Configurá en 5 minutos"
     img="https://i.ibb.co/VMyZzy6/telefono-inteligente-2.png"
-    descripcion="Convertirnos en el aliado tecnológico de confianza para cada negocio de barrio, impulsando su crecimiento y digitalización sin complicaciones."
+    descripcion={
+      <>
+      Lleva el registro de cada venta y ten un control total de tu stock desde un solo lugar. <br />
+      Evita pérdidas y optimiza tu negocio.
+      </>
+    }
   />
     <CardDatosEmpresa
     titulo="Escaneá el QR"
@@ -35,12 +40,16 @@ export function BannerHome() {
     isQR
     link="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   />
-  <CardDatosEmpresa
-    titulo="Soporte las 24hs"
-    img="https://i.ibb.co/kJ6dYm6/ordenador-portatil.png"
-    descripcion="¿Estás teniendo dificultades técnicas o problemas con el software? ¡Contactate con nosotros al 11-2233-4444 y lo resolvemos al instante!"
-  />
-
+<CardDatosEmpresa
+  titulo="Soporte las 24hs"
+  img="https://i.ibb.co/kJ6dYm6/ordenador-portatil.png"
+  descripcion={
+    <>
+      ¿Estás teniendo dificultades técnicas o problemas con el software? <br />
+      ¡Contactate con nosotros al 11-2233-4444 y lo resolvemos al instante!
+    </>
+  }
+/>
 </ContentSocial>
           
         </div>
