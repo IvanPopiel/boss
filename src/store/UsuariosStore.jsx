@@ -102,6 +102,9 @@ insertarUsuario: async (parametrosAuth, p, datacheckpermisos) => {
     console.error("❌ Error creando usuario:", error.message);
     return null;
   }
+  //  forzar cierre de sesión del usuario recien creado
+  await supabase.auth.signOut();
+
 
   // 2. Insertar en tabla usuarios
   const dataUserNew = await InsertarUsuarios({

@@ -18,12 +18,14 @@ export const AuthContextProvider = ({ children }) => {
         }
 
         // ⏭️ Saltar validación si venís de creación
-        if ((event === "SIGNED_IN" || event === "SIGNED_UP") && localStorage.getItem("skipNextValidation")) {
-          console.log("⏭️ Skip validación inicial");
-          localStorage.removeItem("skipNextValidation");
-          setUser(session.user);
-          return;
-        }
+        if (
+            (event === "SIGNED_IN" || event === "SIGNED_UP") &&
+            localStorage.getItem("skipNextValidation")
+          ) {
+            console.log("⏭️ Skip validación inicial");
+            localStorage.removeItem("skipNextValidation");
+            return; // 👈 importante: no setea el nuevo usuario
+          }
 
         // Consultar tabla usuarios
         const { data: userData, error } = await supabase
