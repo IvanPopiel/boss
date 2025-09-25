@@ -144,7 +144,7 @@ export function RegistrarPersonal({
                     required: accion === "Editar" ? false : true,
                   })}
                 />
-                <label className="form__label">Correo</label>
+                <label className="form__label">Correo electrónico</label>
                 {errors.correo?.type === "required" && <p>Campo requerido</p>}
               </InputText>
             </article>
@@ -160,7 +160,7 @@ export function RegistrarPersonal({
                       required: true,
                     })}
                   />
-                  <label className="form__label">pass</label>
+                  <label className="form__label">Contraseña</label>
                   {errors.pass?.type === "required" && <p>Campo requerido</p>}
                 </InputText>
               </article>
@@ -310,6 +310,15 @@ const Container = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
     height: 90vh;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #484848;
+      border-radius: 10px;
+    }
     width: 100%;
     max-width: 90%;
     border-radius: 20px;
@@ -323,6 +332,7 @@ const Container = styled.div`
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+
       h1 {
         font-size: 20px;
         font-weight: 500;

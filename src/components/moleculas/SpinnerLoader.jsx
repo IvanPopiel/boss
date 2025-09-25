@@ -5,7 +5,7 @@ export function SpinnerLoader() {
   const { colorCategoria } = useOperaciones();
   return (
     <Container>
-      <HashLoader color="#7f3ceb" size={200}/>
+      <HashLoader color="#651829" size={200}/>
     </Container>
   );
 }

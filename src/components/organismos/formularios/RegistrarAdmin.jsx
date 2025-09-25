@@ -184,6 +184,3 @@ const ContentClose =styled.div`
   
   
 `
-
-
-
