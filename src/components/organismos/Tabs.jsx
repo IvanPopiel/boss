@@ -156,12 +156,12 @@ const Container = styled.div`
       display: flex;
       height: 4px;
       width: 180px;
-      background-color: #e05024;
+      background-color: #844654;
       z-index: 1;
       border-radius: 15px;
       transition: 0.25s ease-out;
       transform: translateX(${(props) => props.activeTab});
-      box-shadow: 0px 10px 20px -3px #ff5722;
+      box-shadow: 0px 10px 20px -3px #280a10;
       bottom:0;
     }
   }

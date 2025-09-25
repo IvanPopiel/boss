@@ -109,19 +109,6 @@ function InventarioEntradaSalida() {
   );
   return (
     <Container>
-      <Buscador
-        funcion={() => setstateListaProductos(!stateListaproductos)}
-        setBuscador={setBuscador}
-      />
-      {stateListaproductos && (
-        <ListaGenerica funcion={(p)=>{
-          selectProductos(p)
-          setBuscador("")
-        }}
-          setState={() => setstateListaProductos(!stateListaproductos)}
-          data={dataproductosbuscador}
-        />
-      )}
 
       <PDFViewer className="pdfviewer">
         <Document title="Reporte de stock todos">

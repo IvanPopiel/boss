@@ -5,29 +5,31 @@ import {
   Text,
   View,
   StyleSheet,
-  Font,
   PDFViewer,
 } from "@react-pdf/renderer";
 import { useEmpresaStore, useProductosStore } from "../../../index";
 import { useQuery } from "@tanstack/react-query";
 
-function StockInventariooValorado() {
-  const { reportInventariooValorado } = useProductosStore();
+function StockInventarioValorado() {
+  // 1️⃣ Corrección del nombre (sacamos la doble "oo")
+  const { reportInventarioValorado } = useProductosStore();
   const { dataempresa } = useEmpresaStore();
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["reporte stock valorado", { _id_empresa: dataempresa?.id }],
-    queryFn: () => reportInventariooValorado({ _id_empresa: dataempresa?.id }),
-    enabled: !!dataempresa,
+
+  const { data = [], isLoading, error } = useQuery({
+    queryKey: ["reporte stock valorado", { id_empresa: dataempresa?.id }], // 2️⃣ Corrección clave y param
+    queryFn: () => reportInventarioValorado({ id_empresa: dataempresa?.id }),
+    enabled: !!dataempresa?.id,
   });
+
   if (isLoading) {
-    return <span>cargando</span>;
+    return <span>Cargando...</span>;
   }
   if (error) {
-    return <span>Error {error.message}</span>;
+    return <span>Error: {error.message}</span>;
   }
- // Calcular el total general
- const totalGeneral = data?.reduce((acc, item) => acc + item.total, 0) || 0;
 
+  // 3️⃣ Calcular el total general (con fallback seguro)
+  const totalGeneral = data.reduce((acc, item) => acc + (item.total || 0), 0);
 
   const styles = StyleSheet.create({
     page: { flexDirection: "row", position: "relative" },
@@ -37,7 +39,6 @@ function StockInventariooValorado() {
       flexDirection: "row",
       borderBottom: 1,
       borderBottomColor: "#121212",
-      alignItems: "stretch",
       height: 24,
       borderLeftColor: "#000",
       borderLeft: 1,
@@ -48,7 +49,6 @@ function StockInventariooValorado() {
     cell: {
       flex: 1,
       textAlign: "center",
-
       borderLeftColor: "#000",
       justifyContent: "flex-start",
       alignItems: "center",
@@ -57,17 +57,15 @@ function StockInventariooValorado() {
       flex: 1,
       backgroundColor: "#dcdcdc",
       fontWeight: "bold",
-
-      textAlign: "left",
-      justifyContent: "flex-start",
-      alignItems: "center",
       textAlign: "center",
     },
   });
+
   const currentDate = new Date();
   const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`;
+
   const renderTableRow = (rowData, isHeader = false) => (
-    <View style={styles.row} key={rowData.id}>
+    <View style={styles.row} key={rowData.id || rowData.descripcion}>
       <Text style={[styles.cell, isHeader && styles.headerCell]}>
         {rowData.descripcion}
       </Text>
@@ -82,10 +80,11 @@ function StockInventariooValorado() {
       </Text>
     </View>
   );
+
   return (
     <Container>
       <PDFViewer className="pdfviewer">
-        <Document title="Reporte de stock todos">
+        <Document title="Reporte de stock valorado">
           <Page size="A4" orientation="portrait">
             <View style={styles.page}>
               <View style={styles.section}>
@@ -96,16 +95,16 @@ function StockInventariooValorado() {
                     marginBottom: 10,
                   }}
                 >
-                  Inventarioo valorado
+                  Inventario Valorado
                 </Text>
                 <Text
                   style={{
-                    fontSize: 18,
-                    fontWeight: "ultrabold",
+                    fontSize: 16,
+                    fontWeight: "bold",
                     marginBottom: 10,
                   }}
                 >
-                  Total: {totalGeneral}
+                  Total general: {totalGeneral}
                 </Text>
                 <Text>Fecha y hora del reporte: {formattedDate}</Text>
                 <View style={styles.table}>
@@ -113,22 +112,22 @@ function StockInventariooValorado() {
                     {
                       descripcion: "Producto",
                       stock: "Stock",
-                       preciocompra:"Precio",
-                      total:"Total"
+                      preciocompra: "Precio",
+                      total: "Total",
                     },
                     true
                   )}
-                  {data?.map((movement) => renderTableRow(movement))}
+                  {data.map((movement) => renderTableRow(movement))}
                 </View>
               </View>
             </View>
           </Page>
         </Document>
       </PDFViewer>
-     
     </Container>
   );
 }
+
 const Container = styled.div`
   width: 100%;
   height: 80vh;
@@ -137,4 +136,5 @@ const Container = styled.div`
     height: 100%;
   }
 `;
-export default StockInventariooValorado;
+
+export default StockInventarioValorado;

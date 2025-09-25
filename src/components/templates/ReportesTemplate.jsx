@@ -10,18 +10,15 @@ export function ReportesTemplate() {
         <Sidebar>
           <SidebarSection>
             <SidebarTitle>Stock Actual</SidebarTitle>
-            <SidebarItem to="stock-actual-por-producto">
-              Por producto
-            </SidebarItem>
             <SidebarItem to="stock-actual-todos">Todos</SidebarItem>
-            <SidebarItem to="stock-bajo-minimo">Bajo del mínimo</SidebarItem>
+            <SidebarItem to="stock-bajo-minimo">Al mínimo o menos</SidebarItem>
           </SidebarSection>
           <SidebarSection>
           <SidebarTitle>Entradas y salidas</SidebarTitle>
-          <SidebarItem to="inventario-entradas-salidas">Por producto</SidebarItem>
+          <SidebarItem to="inventario-entradas-salidas">Todos</SidebarItem>
           </SidebarSection>
           <SidebarSection>
-          <SidebarTitle to="ss">Valorizado</SidebarTitle>
+          <SidebarTitle to="ss">Capital</SidebarTitle>
           <SidebarItem to="inventario-valorado">Todos</SidebarItem>
           </SidebarSection>
         </Sidebar>
