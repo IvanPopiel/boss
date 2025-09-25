@@ -102,7 +102,7 @@ export function LoginTemplate() {
                   required: true,
                 })}
               />
-              <label className="form__label">Corre electronico</label>
+              <label className="form__label">Correo electronico</label>
               {errors.correo?.type === "required" && <p>Campo requerido</p>}
             </InputText>
             <InputText icono={<v.iconopass />}>
@@ -119,10 +119,10 @@ export function LoginTemplate() {
               {errors.pass?.type === "required" && <p>Campo requerido</p>}
             </InputText>
             <ContainerBtn>
-              <Btnsave titulo="Iniciar" bgcolor="#424142" colorTexto="#fff" />
+              <Btnsave titulo="Iniciar Sesión" bgcolor="#651829" colorTexto="#fff" />
               <Btnsave
                 funcion={() => setState(!state)}
-                titulo="Crear cuenta"
+                titulo="Registrate"
                 bgcolor="#ffffff"
               />
             </ContainerBtn>
@@ -218,7 +218,7 @@ const Container = styled.div`
       }
     }
     .frase {
-      color: #fc6c32;
+      color: #651829;
       font-size: 1.5rem;
       font-weight: 700;
       margin-bottom:30px;
@@ -265,5 +265,5 @@ const ContainerBtn = styled.div`
   justify-content: center;
 `;
 const TextoStateInicio = styled.p`
-  color: #fc7575;
+  color: #651829;
 `;

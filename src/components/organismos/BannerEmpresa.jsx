@@ -25,7 +25,7 @@ export function BannerEmpresa() {
         
 
           <ContentSocial>
-            <CardDatosEmpresa titulo="Moneda" valor={dataempresa?.simbolomoneda}/>
+            <CardDatosEmpresa titulo="Moneda" valor="ARS $"/>
             <CardDatosEmpresa titulo="Usuarios" valor={contadorusuarios}/>
             
           </ContentSocial>
@@ -33,7 +33,7 @@ export function BannerEmpresa() {
 
   
         <div className="contentsvg">
-        <svg class="opacity-0 group-hover:opacity-100 transform-gpu transition-all will-change-auto duration-600 ease-in-out" viewBox="0 0 492 253" fill="none" xmlns="http://www.w3.org/2000/svg"><g filter="url(#filter0_f_934_1718)"><path d="M436.631 215.884C513.562 314.19 490.786 459.853 385.76 541.232C280.733 622.611 133.227 608.889 56.2961 510.583C-20.6352 412.277 2.14047 266.613 107.167 185.234C212.193 103.855 359.699 117.578 436.631 215.884Z" fill="#C300E2"></path><path d="M436.631 285.2C513.562 383.506 490.786 529.169 385.76 610.548C280.733 691.927 133.227 678.205 56.2961 579.899C-20.6352 481.593 2.14047 335.93 107.167 254.551C212.193 173.172 359.699 186.894 436.631 285.2Z" fill="white"></path></g><defs><filter id="filter0_f_934_1718" x="-120.728" y="0.703659" width="734.383" height="794.376" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="65.7243" result="effect1_foregroundBlur_934_1718"></feGaussianBlur></filter></defs></svg>
+        <svg class="opacity-0 group-hover:opacity-100 transform-gpu transition-all will-change-auto duration-600 ease-in-out" viewBox="0 0 492 253" fill="none" xmlns="http://www.w3.org/2000/svg"><g filter="url(#filter0_f_934_1718)"><path d="M436.631 215.884C513.562 314.19 490.786 459.853 385.76 541.232C280.733 622.611 133.227 608.889 56.2961 510.583C-20.6352 412.277 2.14047 266.613 107.167 185.234C212.193 103.855 359.699 117.578 436.631 215.884Z" fill="#651829"></path><path d="M436.631 285.2C513.562 383.506 490.786 529.169 385.76 610.548C280.733 691.927 133.227 678.205 56.2961 579.899C-20.6352 481.593 2.14047 335.93 107.167 254.551C212.193 173.172 359.699 186.894 436.631 285.2Z" fill="white"></path></g><defs><filter id="filter0_f_934_1718" x="-120.728" y="0.703659" width="734.383" height="794.376" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="65.7243" result="effect1_foregroundBlur_934_1718"></feGaussianBlur></filter></defs></svg>
         </div>
 
         <svg
@@ -119,12 +119,12 @@ const Container = styled.div`
     content: "";
     transition: 0.6s ease-in-out;
     position: absolute;
-    background: rgb(255, 64, 219);
+    background: #651829;
     background: linear-gradient(
       180deg,
-      rgba(255, 64, 219, 1) 0%,
-      rgba(225, 40, 205, 0.4318102240896359) 0%,
-      rgba(120, 42, 253, 1) 59%
+      #651829 0%,
+      #651829 0%,
+#651829 59%
     );
     border-radius: 50%;
     filter: blur(96px);

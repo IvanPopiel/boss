@@ -27,7 +27,7 @@ export function DataUser({ stateConfig }) {
   return (
     <Container onClick={stateConfig.setState}>
       <div className="imgContainer">
-        <img src="https://i.ibb.co/kGYgRZ8/programador.png" />
+        <img src="https://cdn-icons-png.flaticon.com/512/4814/4814842.png" />
       </div>
 
       <BtnCircular

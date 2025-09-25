@@ -90,9 +90,9 @@ const mutation = useMutation({
                   pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
                 })}
               />
-               <label className="form__label">email</label>
+               <label className="form__label">Correo electrónico</label>
               {errors.correo?.type === "pattern" && (
-                <p>El formato del email es incorrecto</p>
+                <p>Debes ingresar un formato de correo válido</p>
               )}
               {errors.correo?.type === "required" && <p>Campo requerido</p>}
             </InputText>
@@ -106,15 +106,15 @@ const mutation = useMutation({
                   required: true,
                 })}
               />
- <label className="form__label">pass</label>
+ <label className="form__label">Contraseña</label>
               {errors.pass?.type === "required" && <p>Campo requerido</p>}
             </InputText>
           </article>
           <div className="btnguardarContent">
             <Btnsave
               icono={<v.iconoguardar />}
-              titulo="Guardar"
-              bgcolor="#ff7556"  
+              titulo="Crear cuenta"
+              bgcolor="#651829"  
             />
           </div>
         </section>

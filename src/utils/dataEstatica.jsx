@@ -69,37 +69,37 @@ export const TemasData = [
 export const DataModulosConfiguracion =[
   {
     title:"Productos",
-    subtitle:"registra tus productos",
-    icono:"https://i.ibb.co/85zJ6yG/caja-del-paquete.png",
+    subtitle:"Registra tus productos",
+    icono:"https://cdn-icons-png.flaticon.com/512/16233/16233227.png",
     link:"/configurar/productos",
    
   },
   {
     title:"Personal",
-    subtitle:"ten el control de tu personal",
-    icono:"https://i.ibb.co/5vgZ0fX/hombre.png",
+    subtitle:"Maneja el control del personal",
+    icono:"https://cdn-icons-png.flaticon.com/512/6676/6676016.png",
     link:"/configurar/usuarios",
    
   },
 
   {
     title:"Tu empresa",
-    subtitle:"configura tus opciones básicas",
-    icono:"https://i.ibb.co/x7mHPgm/administracion-de-empresas.png",
+    subtitle:"Configura tus opciones básicas",
+    icono:"https://cdn-icons-png.flaticon.com/512/15407/15407187.png",
     link:"/configurar/empresa",
     
   },
   {
     title:"Categoria de productos",
-    subtitle:"asigna categorias a tus productos",
-    icono:"https://i.ibb.co/VYbMRLZ/categoria.png",
+    subtitle:"Asigna categorias a tus productos",
+    icono:"https://cdn-icons-png.flaticon.com/512/11168/11168334.png",
     link:"/configurar/categorias",
     
   },
   {
     title:"Marca de productos",
-    subtitle:"gestiona tus marcas",
-    icono:"https://i.ibb.co/1qsbCRb/piensa-fuera-de-la-caja.png",
+    subtitle:"Gestiona tus marcas",
+    icono:"https://cdn-icons-png.flaticon.com/512/5486/5486264.png",
     link:"/configurar/marca",
    
   },

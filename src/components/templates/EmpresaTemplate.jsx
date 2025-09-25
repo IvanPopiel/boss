@@ -87,7 +87,7 @@ position:relative;
   }
   .main {
     grid-area: main;
-    /* background-color: rgba(179, 46, 241, 0.14); */
+    /* background-color: rgba(101, 24, 41, 0.14); */
   }
 `;
 const ContentFiltro = styled.div`
