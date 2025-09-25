@@ -20,6 +20,7 @@ useEffect(() => {
         if (skip) {
           console.log("⏭️ Skip validación porque el usuario recién fue creado");
           localStorage.removeItem("skipNextValidation");
+          setUser(session.user)
           return;
         }
       }
