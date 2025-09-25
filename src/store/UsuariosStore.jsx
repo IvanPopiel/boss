@@ -59,28 +59,34 @@ export const useUsuariosStore = create((set, get) => ({
     });
     set(mostrarUsuariosTodos({_id_empresa:idempresa}));
   },
+  
   insertarUsuarioAdmin: async (p) => {
-    //creando el correo y pass
+  // 1. Marcar que el próximo SIGNED_IN no valide estado
+  localStorage.setItem("skipNextValidation", "true");
 
-    await supabase.auth.signUp({
-      email: p.correo,
-      password: p.pass,
-    });
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: p.correo,
-      password: p.pass,
-    });
-    if (error) {
-      return null;
-    }
-    await InsertarUsuarios({
-      idauth: data.user.id,
-      fecharegistro: new Date(),
-      tipouser: p.tipouser,
-    });
+  // 2. Crear el usuario en Supabase Auth
+  const { data, error } = await supabase.auth.signUp({
+    email: p.correo,
+    password: p.pass,
+  });
 
-    return data.user;
-  },
+  if (error) {
+    console.error("❌ Error creando superadmin:", error.message);
+    return null;
+  }
+
+  // ⚡ 3. Insertar también en la tabla usuarios con estado = "activo"
+  await InsertarUsuarios({
+    idauth: data.user.id,
+    fecharegistro: new Date(),
+    tipouser: p.tipouser,
+    estado: "activo",   // 👈 importantísimo
+  });
+
+  // 4. Retornar el usuario de Auth
+  return data.user;
+},
+
 
 insertarUsuario: async (parametrosAuth, p, datacheckpermisos) => {
   // marcar que es creación para que AuthContext lo ignore

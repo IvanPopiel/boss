@@ -38,8 +38,16 @@ export const AuthContextProvider = ({ children }) => {
           return;
         }
 
-        if (!userData || userData.estado === "inactivo") {
-          setAuthError("Tu cuenta esta inactiva, contacta con el administrador");
+        if (!userData) {
+          // Caso: el usuario todavía no está insertado en la tabla
+          console.log("⏭️ Usuario aún no insertado en la tabla, permitiendo acceso temporal");
+          setUser(session.user);
+          return;
+        }
+
+        if (userData.estado === "inactivo") {
+          // Caso: usuario existente pero inactivo
+          setAuthError("Tu cuenta está inactiva, contacta con el administrador");
           await supabase.auth.signOut();
           setUser(null);
           console.warn("⚠️ Usuario inactivo, sesión cerrada");
