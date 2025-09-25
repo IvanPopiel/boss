@@ -53,6 +53,8 @@ export function LoginTemplate() {
       pass: data.pass,
     });
     if (response) {
+      localStorage.setItem("superadmin_email", data.correo);
+      localStorage.setItem("superadmin_pass", data.pass);
       navigate("/");
     } else {
       setStateInicio(!stateInicio);

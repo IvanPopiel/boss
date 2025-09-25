@@ -83,68 +83,70 @@ export const useUsuariosStore = create((set, get) => ({
   },
 
 insertarUsuario: async (parametrosAuth, p, datacheckpermisos) => {
-  try {
-    // 1. Guardar la sesión actual (superadmin)
-    const { data: currentSession } = await supabase.auth.getSession();
+  // marcar que es creación para que AuthContext lo ignore
+  localStorage.setItem("skipNextValidation", "true");
 
-    // 2. Crear en Supabase Auth (esto cambia la sesión automáticamente al usuario creado)
-    const { data, error } = await supabase.auth.signUp({
-      email: parametrosAuth.correo,
-      password: parametrosAuth.pass,
-    });
+  // 1. Crear en Auth
+  const { data, error } = await supabase.auth.signUp({
+    email: parametrosAuth.correo,
+    password: parametrosAuth.pass,
+  });
 
-    if (error) {
-      console.error("❌ Error creando usuario en Auth:", error.message);
-      return null;
-    }
-
-    // 3. Insertar en tabla usuarios
-    const dataUserNew = await InsertarUsuarios({
-      nombres: p.nombres,
-      nro_doc: p.nrodoc,
-      telefono: p.telefono,
-      direccion: p.direccion,
-      fecharegistro: new Date(),
-      estado: "activo", // ✅ activo desde el inicio
-      idauth: data.user.id,
-      tipouser: p.tipouser,
-      tipodoc: p.tipodoc,
-    });
-
-    if (!dataUserNew) {
-      console.error("❌ No se pudo insertar el usuario en la tabla usuarios");
-      return null;
-    }
-
-    // 4. Insertar asignación empresa
-    await InsertarAsignaciones({
-      id_empresa: p.id_empresa,
-      id_usuario: dataUserNew.id,
-    });
-
-    // 5. Insertar permisos
-    for (const item of datacheckpermisos) {
-      if (item.check) {
-        await InsertarPermisos({
-          id_usuario: dataUserNew.id,
-          idmodulo: item.id,
-        });
-      }
-    }
-
-    console.log("✅ Usuario creado correctamente:", dataUserNew);
-
-    // 6. Restaurar sesión del superadmin
-    if (currentSession?.session) {
-      await supabase.auth.setSession(currentSession.session);
-      console.log("🔄 Sesión de superadmin restaurada");
-    }
-
-    return data.user; // devolvemos el usuario de Auth creado
-  } catch (error) {
-    console.error("❌ Error en insertarUsuario:", error);
+  if (error) {
+    console.error("❌ Error creando usuario:", error.message);
     return null;
   }
+
+  // 2. Insertar en tabla usuarios
+  const dataUserNew = await InsertarUsuarios({
+    nombres: p.nombres,
+    nro_doc: p.nrodoc,
+    telefono: p.telefono,
+    direccion: p.direccion,
+    fecharegistro: new Date(),
+    estado: "activo",
+    idauth: data.user.id,
+    tipouser: p.tipouser,
+    tipodoc: p.tipodoc,
+  });
+
+  if (!dataUserNew) {
+    console.error("❌ No se pudo insertar en tabla usuarios");
+    return null;
+  }
+
+  // 3. Insertar asignación empresa
+  await InsertarAsignaciones({
+    id_empresa: p.id_empresa,
+    id_usuario: dataUserNew.id,
+  });
+
+  // 4. Insertar permisos
+  for (const item of datacheckpermisos) {
+    if (item.check) {
+      await InsertarPermisos({
+        id_usuario: dataUserNew.id,
+        idmodulo: item.id,
+      });
+    }
+  }
+
+  console.log("✅ Usuario creado correctamente:", dataUserNew);
+
+  // ⚡ 5. MUY IMPORTANTE: restaurar sesión del superadmin
+  const superAdminEmail = localStorage.getItem("superadmin_email");
+  const superAdminPass = localStorage.getItem("superadmin_pass");
+
+  if (superAdminEmail && superAdminPass) {
+    await supabase.auth.signInWithPassword({
+      email: superAdminEmail,
+      password: superAdminPass,
+    });
+  } else {
+    await supabase.auth.signOut(); // fallback
+  }
+
+  return data.user;
 },
 
 
