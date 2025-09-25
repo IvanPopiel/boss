@@ -50,6 +50,12 @@ export const AuthContextProvider = ({ children }) => {
         if (userData.estado === "inactivo") {
           // Caso: usuario existente pero inactivo
           setAuthError("Tu cuenta está inactiva, contacta con el administrador");
+
+          // ⏱️ El mensaje dura 3 segundos
+          setTimeout(() => {
+            setAuthError(null);
+          }, 5000);
+
           await supabase.auth.signOut();
           setUser(null);
           console.warn("⚠️ Usuario inactivo, sesión cerrada");
