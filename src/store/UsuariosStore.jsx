@@ -60,103 +60,154 @@ export const useUsuariosStore = create((set, get) => ({
     set(mostrarUsuariosTodos({_id_empresa:idempresa}));
   },
   
-  insertarUsuarioAdmin: async (p) => {
-  // 1. Marcar que el próximo SIGNED_IN no valide estado
-  localStorage.setItem("skipNextValidation", "true");
+insertarUsuarioAdmin: async (p) => {
+  try {
+    // 1. Marcar que el próximo SIGNED_IN no valide estado
+    localStorage.setItem("skipNextValidation", "true");
 
-  // 2. Crear el usuario en Supabase Auth
-  const { data, error } = await supabase.auth.signUp({
-    email: p.correo,
-    password: p.pass,
-  });
+    // 2. Crear el usuario en Supabase Auth
+    const { data, error } = await supabase.auth.signUp({
+      email: p.correo,
+      password: p.pass,
+    });
 
-  if (error) {
-    console.error("❌ Error creando superadmin:", error.message);
-    return null;
+    if (error) {
+      localStorage.removeItem("skipNextValidation");
+      console.error("❌ Error creando superadmin:", error.message);
+
+      // detectar caso de correo duplicado (422)
+      const isDup =
+        (error.status && error.status === 422) ||
+        /already.*registered/i.test(error.message);
+      return {
+        ok: false,
+        code: isDup ? "email_exists" : "signup_error",
+        message: isDup
+          ? "Este correo ya está registrado."
+          : error.message,
+      };
+    }
+
+    // ⚡ 3. Insertar también en la tabla usuarios
+    await InsertarUsuarios({
+      idauth: data.user.id,
+      fecharegistro: new Date(),
+      tipouser: p.tipouser,
+      estado: "activo", // 👈 importantísimo
+      correo: p.correo,
+    });
+
+    // 4. Retornar un objeto estructurado
+    return { ok: true, user: data.user };
+
+  } catch (e) {
+    console.error("❌ Error inesperado en insertarUsuarioAdmin:", e);
+    return { ok: false, code: "unexpected", message: e.message };
   }
-
-  // ⚡ 3. Insertar también en la tabla usuarios con estado = "activo"
-  await InsertarUsuarios({
-    idauth: data.user.id,
-    fecharegistro: new Date(),
-    tipouser: p.tipouser,
-    estado: "activo",   // 👈 importantísimo
-  });
-
-  // 4. Retornar el usuario de Auth
-  return data.user;
 },
+
 
 
 insertarUsuario: async (parametrosAuth, p, datacheckpermisos) => {
-  // marcar que es creación para que AuthContext lo ignore
-  localStorage.setItem("skipNextValidation", "true");
+  try {
+    // 1. Validar si ya existe en tu tabla usuarios (evitar duplicados externos)
+    const { data: existing, error: checkError } = await supabase
+      .from("usuarios")
+      .select("id")
+      .eq("correo", parametrosAuth.correo)
+      .maybeSingle();
 
-  // 1. Crear en Auth
-  const { data, error } = await supabase.auth.signUp({
-    email: parametrosAuth.correo,
-    password: parametrosAuth.pass,
-  });
-
-  if (error) {
-    console.error("❌ Error creando usuario:", error.message);
-    return null;
-  }
-  //  forzar cierre de sesión del usuario recien creado
-  await supabase.auth.signOut();
-
-
-  // 2. Insertar en tabla usuarios
-  const dataUserNew = await InsertarUsuarios({
-    nombres: p.nombres,
-    nro_doc: p.nrodoc,
-    telefono: p.telefono,
-    direccion: p.direccion,
-    fecharegistro: new Date(),
-    estado: "activo",
-    idauth: data.user.id,
-    tipouser: p.tipouser,
-    tipodoc: p.tipodoc,
-  });
-
-  if (!dataUserNew) {
-    console.error("❌ No se pudo insertar en tabla usuarios");
-    return null;
-  }
-
-  // 3. Insertar asignación empresa
-  await InsertarAsignaciones({
-    id_empresa: p.id_empresa,
-    id_usuario: dataUserNew.id,
-  });
-
-  // 4. Insertar permisos
-  for (const item of datacheckpermisos) {
-    if (item.check) {
-      await InsertarPermisos({
-        id_usuario: dataUserNew.id,
-        idmodulo: item.id,
-      });
+    if (checkError) {
+      console.error("❌ Error verificando correo en usuarios:", checkError);
+      return { ok: false, code: "check_error", message: "Error verificando correo" };
     }
-  }
 
-  console.log("✅ Usuario creado correctamente:", dataUserNew);
+    if (existing) {
+      return { ok: false, code: "email_exists", message: "El correo ya está registrado en otro usuario." };
+    }
 
-  // ⚡ 5. MUY IMPORTANTE: restaurar sesión del superadmin
-  const superAdminEmail = localStorage.getItem("superadmin_email");
-  const superAdminPass = localStorage.getItem("superadmin_pass");
+    // 2. Marcar que es creación para que AuthContext lo ignore
+    localStorage.setItem("skipNextValidation", "true");
 
-  if (superAdminEmail && superAdminPass) {
-    await supabase.auth.signInWithPassword({
-      email: superAdminEmail,
-      password: superAdminPass,
+    // 3. Crear en Supabase Auth
+    const { data, error } = await supabase.auth.signUp({
+      email: parametrosAuth.correo,
+      password: parametrosAuth.pass,
     });
-  } else {
-    await supabase.auth.signOut(); // fallback
-  }
 
-  return data.user;
+    if (error) {
+      console.error("❌ Error creando usuario:", error.message);
+
+      // Detectar duplicado en Auth
+      const isDup = error.status === 422 || /registered/i.test(error.message);
+      return {
+        ok: false,
+        code: isDup ? "email_exists" : "signup_error",
+        message: isDup ? "El correo ya está registrado en Auth." : error.message,
+      };
+    }
+
+    // 4. Forzar cierre de sesión del usuario recién creado
+    await supabase.auth.signOut();
+
+    // 5. Insertar en tabla usuarios
+    const dataUserNew = await InsertarUsuarios({
+      nombres: p.nombres,
+      nro_doc: p.nrodoc,
+      telefono: p.telefono,
+      direccion: p.direccion,
+      fecharegistro: new Date(),
+      estado: "activo",
+      idauth: data.user.id,
+      tipouser: p.tipouser,
+      tipodoc: p.tipodoc,
+      correo: parametrosAuth.correo, // 👈 importante guardar el correo también
+    });
+
+    if (!dataUserNew) {
+      console.error("❌ No se pudo insertar en tabla usuarios");
+      return { ok: false, code: "insert_error", message: "Error insertando usuario en tabla interna" };
+    }
+
+    // 6. Insertar asignación empresa
+    await InsertarAsignaciones({
+      id_empresa: p.id_empresa,
+      id_usuario: dataUserNew.id,
+    });
+
+    // 7. Insertar permisos
+    for (const item of datacheckpermisos) {
+      if (item.check) {
+        await InsertarPermisos({
+          id_usuario: dataUserNew.id,
+          idmodulo: item.id,
+        });
+      }
+    }
+
+    console.log("✅ Usuario creado correctamente:", dataUserNew);
+
+    // 8. Restaurar sesión del superadmin
+    const superAdminEmail = localStorage.getItem("superadmin_email");
+    const superAdminPass = localStorage.getItem("superadmin_pass");
+
+    if (superAdminEmail && superAdminPass) {
+      await supabase.auth.signInWithPassword({
+        email: superAdminEmail,
+        password: superAdminPass,
+      });
+    } else {
+      await supabase.auth.signOut(); // fallback
+    }
+
+    return { ok: true, user: data.user };
+
+  } catch (e) {
+    console.error("❌ Error inesperado en insertarUsuario:", e);
+    return { ok: false, code: "unexpected", message: e.message };
+  }
 },
+
 
 
 

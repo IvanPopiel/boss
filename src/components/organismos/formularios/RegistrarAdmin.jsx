@@ -20,26 +20,47 @@ export function RegistrarAdmin({ state, setState }) {
   const { insertarUsuarioAdmin } = useUsuariosStore();
   const { signInWithEmail } = useAuthStore();
   const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
+
+    useEffect(() => {
+    if (errorMsg) {
+      const timer = setTimeout(() => setErrorMsg(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMsg]);
+
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const mutation = useMutation({
-    mutationFn: async (data) => {
-      const p = {
-        correo: data.correo,
-        pass:data.pass,
-        tipouser:"superadmin"
-      }; 
-      const dt =   await insertarUsuarioAdmin(p);
-      if (dt) {
-        navigate("/");
-      } else {
-        setStateInicio(!stateInicio);
+const mutation = useMutation({
+  mutationFn: async (data) => {
+    const p = {
+      correo: data.correo,
+      pass: data.pass,
+      tipouser: "superadmin",
+    };
+
+    const res = await insertarUsuarioAdmin(p);
+
+    if (!res.ok) {
+      // 👇 Mostramos el error en pantalla
+      setErrorMsg(res.message || "Error creando el superadmin");
+
+      if (res.code === "email_exists") {
+        const emailInput = document.querySelector("input[name='correo']");
+        emailInput?.focus();
       }
-    },
-  });
+      return;
+    }
+
+    // Si está todo bien
+    navigate("/");
+    setState(false); // cerrar modal
+  },
+});
   return (
     <Container>
         <ContentClose >
@@ -98,6 +119,8 @@ export function RegistrarAdmin({ state, setState }) {
           </div>
         </section>
       </form>
+
+      {errorMsg && <p style={{ color: "red", marginTop: "10px" }}>{errorMsg}</p>}
       </section>
     </Container>
   );

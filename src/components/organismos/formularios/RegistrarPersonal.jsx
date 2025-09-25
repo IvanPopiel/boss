@@ -3,18 +3,10 @@ import styled from "styled-components";
 import { v } from "../../../styles/variables";
 import {
   InputText,
-  Spinner,
-  useOperaciones,
   Btnsave,
   useUsuariosStore,
-  useCategoriasStore,
   Selector,
-  useProductosStore,
-  useMarcaStore,
   ListaGenerica,
-  Btnfiltro,
-  RegistrarMarca,
-  RegistrarCategorias,
   ListaModulos,
   TipouserData,
   TipoDocData,
@@ -22,13 +14,9 @@ import {
   usePermisosStore,
 } from "../../../index";
 import { useForm } from "react-hook-form";
-import { CirclePicker } from "react-color";
-import Emojipicker from "emoji-picker-react";
 import { useEmpresaStore } from "../../../store/EmpresaStore";
 import { Device } from "../../../styles/breakpoints";
 import { useQuery } from "@tanstack/react-query";
-import { queryClient } from "../../../main";
-import { QueryCache } from "@tanstack/react-query";
 
 export function RegistrarPersonal({
   onClose,
@@ -40,8 +28,6 @@ export function RegistrarPersonal({
   const { dataempresa } = useEmpresaStore();
   const [stateMarca, setStateMarca] = useState(false);
   const [stateCategoria, setStateCategoria] = useState(false);
-  const [openRegistroMarca, SetopenRegistroMarca] = useState(false);
-  const [openRegistroCategoria, SetopenRegistroCategoria] = useState(false);
   const [subaccion, setAccion] = useState("");
   const { datamodulos } = useGlobalStore();
   const [checkboxs, setCheckboxs] = useState([]);
@@ -52,6 +38,16 @@ export function RegistrarPersonal({
   const [tipodoc, setTipodoc] = useState({ icono: "", descripcion: "dni" });
   const { datapermisosEdit, mostrarPermisosEdit } = usePermisosStore();
 
+  const [errorMsg, setErrorMsg] = useState("");
+
+  // limpiar el error automáticamente a los 5 segundos
+  useEffect(() => {
+    if (errorMsg) {
+      const timer = setTimeout(() => setErrorMsg(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMsg]);
+
   const { isLoading } = useQuery({
     queryKey: ["mostrarpermisosedit", { id_usuario: dataSelect.id }],
     queryFn: () => mostrarPermisosEdit({ id_usuario: dataSelect.id }),
@@ -60,10 +56,10 @@ export function RegistrarPersonal({
 
   const {
     register,
-    formState: { errors, isDirty },
+    formState: { errors },
     handleSubmit,
-    watch,
   } = useForm();
+
   async function insertar(data) {
     if (accion === "Editar") {
       const p = {
@@ -75,10 +71,8 @@ export function RegistrarPersonal({
         estado: "activo",
         tipouser: tipouser.descripcion,
         tipodoc: tipodoc.descripcion,
-       
       };
       await editarusuario(p, checkboxs, dataempresa.id);
-      // refetch()
       onClose();
     } else {
       const p = {
@@ -96,28 +90,32 @@ export function RegistrarPersonal({
         correo: data.correo,
         pass: data.pass,
       };
-      await insertarUsuario(parametrosAuth, p, checkboxs);
+
+      const res = await insertarUsuario(parametrosAuth, p, checkboxs);
+
+      if (!res.ok) {
+        setErrorMsg(res.message || "Error al registrar usuario");
+        return;
+      }
 
       onClose();
     }
   }
+
   useEffect(() => {
     if (accion === "Editar") {
-      setTipodoc({icono: "", descripcion: dataSelect.tipodoc})
+      setTipodoc({ icono: "", descripcion: dataSelect.tipodoc });
       setTipouser({
         icono: "",
         descripcion: dataSelect.tipouser,
-      })
-      // selectMarca({ id: dataSelect.idmarca, descripcion: dataSelect.marca });
-      // selectCategoria({
-      //   id: dataSelect.id_categoria,
-      //   descripcion: dataSelect.categoria,
-      // });
+      });
     }
   }, []);
+
   if (isLoading) {
     return <span>cargando...</span>;
   }
+
   return (
     <Container>
       <div className="sub-contenedor">
@@ -136,19 +134,17 @@ export function RegistrarPersonal({
           <section className="seccion1">
             <article>
               <InputText icono={<v.icononombre />}>
-                <input 
-               
-                  disabled={accion === "Editar" ? true : false}
-                  className={accion==="Editar"?"form__field disabled":"form__field"}
+                <input
+                  disabled={accion === "Editar"}
+                  className={accion === "Editar" ? "form__field disabled" : "form__field"}
                   defaultValue={dataSelect.correo}
                   type="text"
                   placeholder=""
                   {...register("correo", {
-                    required: accion==="Editar"?false:true,
+                    required: accion === "Editar" ? false : true,
                   })}
                 />
                 <label className="form__label">Correo</label>
-
                 {errors.correo?.type === "required" && <p>Campo requerido</p>}
               </InputText>
             </article>
@@ -165,7 +161,6 @@ export function RegistrarPersonal({
                     })}
                   />
                   <label className="form__label">pass</label>
-
                   {errors.pass?.type === "required" && <p>Campo requerido</p>}
                 </InputText>
               </article>
@@ -183,7 +178,6 @@ export function RegistrarPersonal({
                   })}
                 />
                 <label className="form__label">Nombres</label>
-
                 {errors.nombres?.type === "required" && <p>Campo requerido</p>}
               </InputText>
             </article>
@@ -196,7 +190,6 @@ export function RegistrarPersonal({
                 texto2={tipodoc.descripcion}
                 funcion={() => setStateMarca(!stateMarca)}
               />
-
               {stateMarca && (
                 <ListaGenerica
                   bottom="-260px"
@@ -206,7 +199,6 @@ export function RegistrarPersonal({
                   funcion={(p) => setTipodoc(p)}
                 />
               )}
-
               {subaccion}
             </ContainerSelector>
 
@@ -222,7 +214,6 @@ export function RegistrarPersonal({
                   })}
                 />
                 <label className="form__label">Nro. doc</label>
-
                 {errors.nrodoc?.type === "required" && <p>Campo requerido</p>}
               </InputText>
             </article>
@@ -239,7 +230,6 @@ export function RegistrarPersonal({
                   })}
                 />
                 <label className="form__label">Telefono</label>
-
                 {errors.telefono?.type === "required" && <p>Campo requerido</p>}
               </InputText>
             </article>
@@ -255,10 +245,7 @@ export function RegistrarPersonal({
                   })}
                 />
                 <label className="form__label">Direccion</label>
-
-                {errors.direccion?.type === "required" && (
-                  <p>Campo requerido</p>
-                )}
+                {errors.direccion?.type === "required" && <p>Campo requerido</p>}
               </InputText>
             </article>
           </section>
@@ -272,7 +259,6 @@ export function RegistrarPersonal({
                 texto2={tipouser.descripcion}
                 funcion={() => setStateCategoria(!stateCategoria)}
               />
-
               {stateCategoria && (
                 <ListaGenerica
                   bottom="-150px"
@@ -290,13 +276,6 @@ export function RegistrarPersonal({
               checkboxs={checkboxs}
               tipouser={tipouser}
             />
-            {/* {checkboxs.map((item, index) => {
-              if (item.check) {
-                return <span>{item.nombre}</span>;
-              } else {
-                return null;
-              }
-            })} */}
           </section>
           <div className="btnguardarContent">
             <Btnsave
@@ -306,10 +285,14 @@ export function RegistrarPersonal({
             />
           </div>
         </form>
+
+        {/* 🔴 Mostrar error de validación */}
+        {errorMsg && <p style={{ color: "red", marginTop: "10px" }}>{errorMsg}</p>}
       </div>
     </Container>
   );
 }
+
 const Container = styled.div`
   transition: 0.5s;
   top: 0;
@@ -327,15 +310,6 @@ const Container = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
     height: 90vh;
-
-    &::-webkit-scrollbar {
-      width: 6px;
-      border-radius: 10px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #484848;
-      border-radius: 10px;
-    }
     width: 100%;
     max-width: 90%;
     border-radius: 20px;
@@ -349,7 +323,6 @@ const Container = styled.div`
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
-
       h1 {
         font-size: 20px;
         font-weight: 500;
