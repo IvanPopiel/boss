@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -38,6 +39,7 @@ export const AuthContextProvider = ({ children }) => {
         }
 
         if (!userData || userData.estado === "inactivo") {
+          setAuthError("Tu cuenta esta inactiva, contacta con el administrador");
           await supabase.auth.signOut();
           setUser(null);
           console.warn("⚠️ Usuario inactivo, sesión cerrada");
@@ -58,12 +60,13 @@ export const AuthContextProvider = ({ children }) => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
       setUser(null);
+      setAuthError(null);
       localStorage.removeItem("skipNextValidation");
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, logout }}>
+    <AuthContext.Provider value={{ user, logout, authError, setAuthError }}>
       {children}
     </AuthContext.Provider>
   );

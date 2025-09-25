@@ -22,6 +22,7 @@ import carrito from "../../assets/icono.png";
 import logo from "../../assets/mini.png";
 import { MdOutlineInfo } from "react-icons/md";
 import { ThemeContext } from "../../App";
+import { UserAuth } from "../../index";
 export function LoginTemplate() {
   const { setTheme, theme } = useContext(ThemeContext);
   setTheme("light")
@@ -31,6 +32,7 @@ export function LoginTemplate() {
   const [correo, setCorreo] = useState("");
   const [pass, setPass] = useState("");
   const [stateInicio, setStateInicio] = useState(false);
+  const { authError } = UserAuth();
   const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: async () => {
@@ -78,6 +80,11 @@ export function LoginTemplate() {
           <Titulo>B.O.S.S</Titulo>
           {stateInicio && (
             <TextoStateInicio>Datos incorrectos</TextoStateInicio>
+            
+          )}
+
+          {authError && (
+            <TextoStateInicio>{authError}</TextoStateInicio>
           )}
           <span className="ayuda">
             {" "}
