@@ -1,7 +1,6 @@
 {
   "projects": {
-    "default": "stockpro-e6a1f",
-    "y": "stockpro-e6a1f"
+    "default": "boss-app-gestion"
   },
   "targets": {},
   "etags": {}

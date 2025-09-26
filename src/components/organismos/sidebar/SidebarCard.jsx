@@ -35,7 +35,7 @@ const Container = styled.div`
   .cardContent {
     position: relative;
     padding: 1rem;
-    background: ${(props) => props.theme.bg5};
+    background: #651829;
     border-radius: 10px;
     overflow: hidden;
 
