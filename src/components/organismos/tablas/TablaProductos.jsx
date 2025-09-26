@@ -24,7 +24,9 @@ export function TablaProductos({
   setdataSelect,
   setAccion,
 }) {
-  if (data?.length == 0) return;
+  if (!data || data.length === 0) {
+    return <p>No hay productos para mostrar</p>;
+  }
   const [pagina, setPagina] = useState(1);
   const [datas, setData] = useState(data);
   const [columnFilters, setColumnFilters] = useState([]);

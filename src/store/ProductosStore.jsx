@@ -16,8 +16,17 @@ export const useProductosStore = create((set, get) => ({
   productoItemSelect: [],
   parametros: {},
   mostrarProductos: async (p) => {
-    const response = await MostrarProductos(p);
-    set({ parametros: p });
+    if (!p?.id_empresa && !p?._id_empresa) {
+      console.error("❌ mostrarProductos necesita id_empresa");
+      return [];
+    }
+  
+    // Normalizamos la key para la función SQL
+    const response = await MostrarProductos({
+      id_empresa: p.id_empresa || p._id_empresa,
+    });
+  
+    set({ parametros: { id_empresa: p.id_empresa || p._id_empresa } });
     set({ dataproductos: response });
     set({ productoItemSelect: [] });
     return response;

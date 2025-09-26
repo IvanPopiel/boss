@@ -68,7 +68,7 @@ export async function BuscarProductos(p) {
 
     const { data, error } = await supabase.rpc("buscarproductos", {
       _id_empresa: p.id_empresa,
-      buscador: p.buscador,   // 👈 ahora sí coincide con el SQL
+      buscador: p.buscador || ""
     });
 
     if (error) {
