@@ -217,24 +217,12 @@ export function RegistrarProductos({ onClose, dataSelect, accion }) {
             </ContainerSelector>
           </section>
           <section className="seccion2">
-            <article>
-              <InputText icono={<v.iconocodigobarras />}>
-                <input
-                  className="form__field"
-                  defaultValue={dataSelect.codigobarras}
-                  type="number"
-                  placeholder=""
-                  {...register("codigobarras", {
-                    required: true,
-                  })}
-                />
-                <label className="form__label">Codigo de barras</label>
 
-                {errors.codigobarras?.type === "required" && (
-                  <p>Campo requerido</p>
-                )}
-              </InputText>
-            </article>
+            
+            
+            
+
+
             <article>
               <InputText icono={<v.iconocodigointerno />}>
                 <input

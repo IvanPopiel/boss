@@ -109,9 +109,12 @@ export function TablaProductos({
         return filterStatuses.includes(status?.id);
       },
     },
+    /**
+     * 
+    codigo de barras no lo uso
     {
       accessorKey: "codigobarras",
-      header: "Cod.barras",
+      header: "Cod.barrass",
       enableSorting: false,
       cell: (info) => (
         <td data-title="Cod. barras" className="ContentCell">
@@ -125,6 +128,7 @@ export function TablaProductos({
         return filterStatuses.includes(status?.id);
       },
     },
+     */
     {
       accessorKey: "precioventa",
       header: "Pr. venta",
