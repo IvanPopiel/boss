@@ -24,34 +24,31 @@ export function BannerHome() {
 
         <ContentSocial>
           <CardDatosEmpresa
-            titulo="Configurá en 5 minutos"
-            img="https://cdn-icons-png.flaticon.com/512/14622/14622060.png"
-            descripcion={
-              <>
-                Lleva el registro de cada venta y ten un control total de tu
-                stock desde un solo lugar. <br />
-                Evita pérdidas y optimiza tu negocio.
-              </>
-            }
-          />
-          <CardDatosEmpresa
             titulo="Escaneá el QR"
-            img="https://upload.wikimedia.org/wikipedia/commons/2/2f/Rickrolling_QR_code.png"
-            descripcion="Accedé directo a nuestra aplicación."
+            img="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://drive.google.com/drive/folders/1sDb5Y2N9FFzvv4S3qFYZc3yITRJt6WGa?usp=sharing"
+            descripcion="Accede al manual y a los tutoriales para manejar el sistema BOSS."
             isQR
-            link="https://c.tenor.com/x8v1oNUOmg4AAAAd/tenor.gif"
+            link="https://drive.google.com/drive/folders/1sDb5Y2N9FFzvv4S3qFYZc3yITRJt6WGa?usp=sharing"
           />
+
           <CardDatosEmpresa
             titulo="Soporte las 24hs"
             img="https://cdn-icons-png.flaticon.com/512/1716/1716894.png"
             descripcion={
               <>
-                ¿Estás teniendo dificultades técnicas o problemas con el software?{" "}
-                <br />
+                ¿Estás teniendo dificultades técnicas o problemas con el
+                software? <br />
                 ¡Contactate con nosotros al 11-2233-4444 y lo resolvemos al
                 instante!
               </>
             }
+          />
+          <CardDatosEmpresa
+            titulo="Escaneá el QR"
+            img="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://drive.google.com/drive/folders/1iCD5VhY1BFDnuQYpdYl84t_1EiBUDOSG?usp=sharing"
+            descripcion="Accedé directo a nuestra aplicación para dispositivos móviles."
+            isQR
+            link="https://drive.google.com/drive/folders/1iCD5VhY1BFDnuQYpdYl84t_1EiBUDOSG?usp=sharing"
           />
         </ContentSocial>
       </div>
@@ -223,7 +220,7 @@ const Container = styled.div`
 const ContentSocial = styled.section`
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 60px;
   padding-top: 15px;
   cursor: pointer;
   align-items: stretch; /* todas las cards igual altura por fila */

@@ -28,7 +28,7 @@ export function CardDatosEmpresa({ titulo, valor, img, descripcion, isQR, link }
 const Container = styled.div`
   z-index: 1;
   .card {
-    width: 220px;
+    width: 210px;
     background: #fffefe;
     padding: 1rem;
     border-radius: 1rem;
@@ -67,7 +67,7 @@ const Container = styled.div`
       width: 160px;   /* más grande */
       height: 160px;
       border-radius: 8px;
-      border: 1px solid #05060f;
+      border: none;
       transition: transform 0.3s ease;
     }
 
